@@ -16,7 +16,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-// Configuração do Entity Framework com PostgreSQL
+// Configuraï¿½ï¿½o do Entity Framework com PostgreSQL
 builder.Services.AddDbContext<AcapraDbContext>(options =>
     options.UseMySql(builder.Configuration.GetConnectionString("DataBase"), ServerVersion.AutoDetect(builder.Configuration.GetConnectionString("DataBase"))));
 //builder.Configuration.GetConnectionString("DataBase")
@@ -24,9 +24,11 @@ builder.Services.AddDbContext<AcapraDbContext>(options =>
 builder.Services.AddScoped<IDbConnection>(provider =>
         new MySqlConnection(builder.Configuration.GetConnectionString("DataBase")));
 
-//registrando os serviços e repositorios
+//registrando os serviï¿½os e repositorios
 builder.Services.AddScoped<IExemploRepository, ExemploRepository>();
 builder.Services.AddScoped<IExemploService, ExemploService>();
+builder.Services.AddScoped<IFormularioPerguntaRepository, FormularioPerguntaRepository>();
+builder.Services.AddScoped<IFormularioPerguntaService, FormularioPerguntaService>();
 
 var app = builder.Build();
 
