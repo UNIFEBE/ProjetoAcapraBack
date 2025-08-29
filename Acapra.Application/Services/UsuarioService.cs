@@ -24,14 +24,19 @@ namespace Acapra.Application.Services
             return _usuarioRepository.Login(email, senha);
         }
 
+        public ApiResponse<UsuarioModel> RedefinirSenha(int id, string novaSenha)
+        {
+            return _usuarioRepository.RedefinirSenha(id, novaSenha);
+        }
+
         public ApiResponse<UsuarioModel> BuscarUsuarioPorId(int id)
         {
             return _usuarioRepository.BuscarUsuarioPorId(id);
         }
 
-        public ApiResponse<UsuarioModel> AtualizarUsuario(UsuarioModel usuario)
+        public ApiResponse<UsuarioModel> AtualizarUsuario(int id, UsuarioModel usuario)
         {
-            return _usuarioRepository.AtualizarUsuario(usuario);
+            return _usuarioRepository.AtualizarUsuario(id, usuario);
         }
 
         public ApiResponse<bool> DeletarUsuario(int id)

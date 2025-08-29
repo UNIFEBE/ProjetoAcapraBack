@@ -27,7 +27,7 @@ namespace Acapra.Infra.Auth
                 new Claim(JwtRegisteredClaimNames.Sub, usuario.id.ToString()),
                 new Claim("nome", usuario.nome),
                 new Claim("email", usuario.email),
-                new Claim("tipo_usuario", usuario.tipo_usuario),
+                // new Claim("tipo_usuario", usuario.tipo_usuario),
                 new Claim("ativo", usuario.ativo.ToString()),
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
             };

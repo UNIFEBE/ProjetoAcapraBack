@@ -1,5 +1,6 @@
 using Acapra.Application.Interfaces;
 using Acapra.Domain.Entities;
+using Microsoft.AspNetCore.Identity.Data;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Acapra.API.Controllers
@@ -25,14 +26,20 @@ namespace Acapra.API.Controllers
 
         [HttpPost]
         [Route("login")]
-        public IActionResult Login([FromBody] dynamic dadosLogin)
+        public IActionResult Login([FromBody] LoginRequest request)
         {
-            string email = dadosLogin.email;
-            string senha = dadosLogin.senha;
-
-            var response = _usuarioService.Login(email, senha);
+            var response = _usuarioService.Login(request.Email, request.Password);
             return StatusCode(response.StatusCode, response);
         }
+
+        [HttpPut]
+        [Route("redefinir-senha/{id}")]
+        public IActionResult RedefinirSenha(int id, [FromBody] string novaSenha)
+        {
+            var response = _usuarioService.RedefinirSenha(id, novaSenha);
+            return StatusCode(response.StatusCode, response);
+        }
+
 
         [HttpGet]
         [Route("buscar-usuario/{id}")]
@@ -43,10 +50,10 @@ namespace Acapra.API.Controllers
         }
 
         [HttpPut]
-        [Route("atualizar-usuario")]
-        public IActionResult AtualizarUsuario([FromBody] UsuarioModel usuario)
+        [Route("atualizar-usuario/{id}")]
+        public IActionResult AtualizarUsuario(int id, [FromBody] UsuarioModel usuario)
         {
-            var response = _usuarioService.AtualizarUsuario(usuario);
+            var response = _usuarioService.AtualizarUsuario(id, usuario);
             return StatusCode(response.StatusCode, response);
         }
 

@@ -5,28 +5,35 @@ using BCrypt.Net;
 using Acapra.Infra.Auth;
 using Acapra.Domain.DTOs;
 using Acapra.Domain.Interfaces.Repositories;
+using Acapra.Infra.Context;
 
 namespace Acapra.Infra.Repositories
 {
     public class UsuarioRepository : IUsuarioRepository
     {
-        private readonly DbContext _context;
-        private readonly JwtService _jwtService;
+        private readonly AcapraDbContext _context;
+        // private readonly JwtService _jwtService;
 
-        public UsuarioRepository(DbContext context, JwtService jwtService)
+        public UsuarioRepository(AcapraDbContext context)
         {
             _context = context;
-            _jwtService = jwtService;
+            // _jwtService = jwtService;
         }
 
         private bool EmailJaUtilizado(string email) =>
-            _context.Set<UsuarioModel>().Any(u => u.email == email);
+            _context.Set<UsuarioModel>().Any(u => u.email == email && u.ativo == true);
+
+        private bool CpfJaUtilizado(string cpf) =>
+            _context.Set<UsuarioModel>().Any(u => u.cpf == cpf && u.ativo == true);
 
         // Cadastrar usuário
         public ApiResponse<UsuarioModel> CadastrarUsuario(UsuarioModel usuario)
         {
             if (EmailJaUtilizado(usuario.email))
                 return new ApiResponse<UsuarioModel>(409, "O e-mail informado já está em uso");
+
+            if (CpfJaUtilizado(usuario.cpf))
+                return new ApiResponse<UsuarioModel>(409, "O CPF informado já está em uso");
 
             usuario.senha = BCrypt.Net.BCrypt.HashPassword(usuario.senha);
 
@@ -44,12 +51,29 @@ namespace Acapra.Infra.Repositories
             if (usuario == null)
                 return new ApiResponse<string>(404, "Usuário não encontrado");
 
+            if (usuario.ativo == false)
+                return new ApiResponse<string>(404, "Usuário inativo");
+
             if (!BCrypt.Net.BCrypt.Verify(senha, usuario.senha))
                 return new ApiResponse<string>(401, "Senha inválida");
 
-            var token = _jwtService.GerarToken(usuario);
+            // var token = _jwtService.GerarToken(usuario);
 
-            return new ApiResponse<string>(200, "Login realizado com sucesso", token);
+            return new ApiResponse<string>(200, "Login realizado com sucesso", null);
+        }
+
+        public ApiResponse<UsuarioModel> RedefinirSenha(int id, string senhaNova)
+        {
+            var usuario = _context.Set<UsuarioModel>().Find(id);
+
+            if (usuario == null)
+                return new ApiResponse<UsuarioModel>(404, "Usuário não encontrado");
+
+            usuario.senha = BCrypt.Net.BCrypt.HashPassword(senhaNova);
+
+            _context.SaveChanges();
+
+            return new ApiResponse<UsuarioModel>(200, "Senha atualizada com sucesso", usuario);
         }
 
         // Buscar usuário por ID
@@ -64,30 +88,36 @@ namespace Acapra.Infra.Repositories
         }
 
         // Atualizar usuário
-        public ApiResponse<UsuarioModel> AtualizarUsuario(UsuarioModel usuarioAtualizado)
+        public ApiResponse<UsuarioModel> AtualizarUsuario(int id, UsuarioModel usuarioAtualizado)
         {
-            var usuario = _context.Set<UsuarioModel>().Find(usuarioAtualizado.id);
+            var usuario = _context.Set<UsuarioModel>().Find(id);
 
             if (usuario == null)
                 return new ApiResponse<UsuarioModel>(404, "Usuário não encontrado");
 
-            usuario.nome = usuarioAtualizado.nome;
-            usuario.email = usuarioAtualizado.email;
-            usuario.celular = usuarioAtualizado.celular;
-            usuario.telefone = usuarioAtualizado.telefone;
-            usuario.tipo_usuario = usuarioAtualizado.tipo_usuario;
+            usuario.nome = string.IsNullOrWhiteSpace(usuarioAtualizado.nome) || usuarioAtualizado.nome == "string" ? usuario.nome : usuarioAtualizado.nome;
+            usuario.email = string.IsNullOrWhiteSpace(usuarioAtualizado.email) || usuarioAtualizado.email == "string" ? usuario.email : usuarioAtualizado.email;
+            usuario.cpf = string.IsNullOrWhiteSpace(usuarioAtualizado.cpf) || usuarioAtualizado.cpf == "string" ? usuario.cpf : usuarioAtualizado.cpf;
+            usuario.celular = string.IsNullOrWhiteSpace(usuarioAtualizado.celular) || usuarioAtualizado.celular == "string" ? usuario.celular : usuarioAtualizado.celular;
+            usuario.telefone = string.IsNullOrWhiteSpace(usuarioAtualizado.telefone) || usuarioAtualizado.telefone == "string" ? usuario.telefone : usuarioAtualizado.telefone;
+            usuario.cep = string.IsNullOrWhiteSpace(usuarioAtualizado.cep) || usuarioAtualizado.cep == "string" ? usuario.cep : usuarioAtualizado.cep;
+            usuario.cidade = string.IsNullOrWhiteSpace(usuarioAtualizado.cidade) || usuarioAtualizado.cidade == "string" ? usuario.cidade : usuarioAtualizado.cidade;
+            usuario.estado = string.IsNullOrWhiteSpace(usuarioAtualizado.estado) || usuarioAtualizado.estado == "string" ? usuario.estado : usuarioAtualizado.estado;
+            usuario.bairro = string.IsNullOrWhiteSpace(usuarioAtualizado.bairro) || usuarioAtualizado.bairro == "string" ? usuario.bairro : usuarioAtualizado.bairro;
+            usuario.endereco = string.IsNullOrWhiteSpace(usuarioAtualizado.endereco) || usuarioAtualizado.endereco == "string" ? usuario.endereco : usuarioAtualizado.endereco;
+            usuario.complemento = string.IsNullOrWhiteSpace(usuarioAtualizado.complemento) || usuarioAtualizado.complemento == "string" ? usuario.complemento : usuarioAtualizado.complemento;
+            usuario.numero = string.IsNullOrWhiteSpace(usuarioAtualizado.numero) || usuarioAtualizado.numero == "string" ? usuario.numero : usuarioAtualizado.numero;
+
+            usuario.tipo_usuario = usuarioAtualizado.tipo_usuario == 0 ? usuario.tipo_usuario : usuarioAtualizado.tipo_usuario;
+
             usuario.ativo = usuarioAtualizado.ativo;
-            usuario.cep = usuarioAtualizado.cep;
-            usuario.cidade = usuarioAtualizado.cidade;
-            usuario.estado = usuarioAtualizado.estado;
-            usuario.bairro = usuarioAtualizado.bairro;
-            usuario.endereco = usuarioAtualizado.endereco;
-            usuario.complemento = usuarioAtualizado.complemento;
 
             _context.SaveChanges();
 
-            return new ApiResponse<UsuarioModel>(200, "Usuário atualizado com sucesso", usuario);
+            var usuarioNovo = _context.Set<UsuarioModel>().Find(id);
+            return new ApiResponse<UsuarioModel>(200, "Usuário atualizado com sucesso", usuarioNovo);
         }
+
 
         // Deletar usuário
         public ApiResponse<bool> DeletarUsuario(int id)
@@ -97,7 +127,8 @@ namespace Acapra.Infra.Repositories
             if (usuario == null)
                 return new ApiResponse<bool>(404, "Usuário não encontrado", false);
 
-            _context.Set<UsuarioModel>().Remove(usuario);
+            usuario.ativo = false;
+            // _context.Set<UsuarioModel>().Remove(usuario);
             _context.SaveChanges();
 
             return new ApiResponse<bool>(200, "Usuário deletado com sucesso", true);

@@ -7,8 +7,10 @@ namespace Acapra.Domain.Interfaces.Repositories
     {
         ApiResponse<UsuarioModel> CadastrarUsuario(UsuarioModel usuario);
         ApiResponse<string> Login(string email, string senha);
+        ApiResponse<UsuarioModel> RedefinirSenha(int id, string senhaNova);
         ApiResponse<UsuarioModel> BuscarUsuarioPorId(int id);
-        ApiResponse<UsuarioModel> AtualizarUsuario(UsuarioModel usuario);
+        ApiResponse<UsuarioModel> AtualizarUsuario(int id, UsuarioModel usuario);
         ApiResponse<bool> DeletarUsuario(int id);
+
     }
 }
