@@ -6,8 +6,19 @@ using Acapra.Infra.Repositories;
 using Microsoft.EntityFrameworkCore;
 using MySqlConnector;
 using System.Data;
+using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAllOrigins", policy =>
+    {
+        policy.WithOrigins("*") // ou "*" para liberar todos
+              .AllowAnyHeader()
+              .AllowAnyMethod();
+    });
+});
 
 // Add services to the container.
 
@@ -25,12 +36,19 @@ builder.Services.AddScoped<IDbConnection>(provider =>
         new MySqlConnection(builder.Configuration.GetConnectionString("DataBase")));
 
 //registrando os servi�os e repositorios
-builder.Services.AddScoped<IExemploRepository, ExemploRepository>();
-builder.Services.AddScoped<IExemploService, ExemploService>();
-// builder.Services.AddScoped<IFormularioPerguntaRepository, FormularioPerguntaRepository>();
-// builder.Services.AddScoped<IFormularioPerguntaService, FormularioPerguntaService>();
+
 builder.Services.AddScoped<IUsuarioRepository, UsuarioRepository>();
 builder.Services.AddScoped<IUsuarioService, UsuarioService>();
+builder.Services.AddScoped<IPetRepository, PetRepository>();
+builder.Services.AddScoped<IPetService, PetService>();
+builder.Services.AddScoped<IFormularioPerguntaRepository, FormularioPerguntaRepository>();
+builder.Services.AddScoped<IFormularioPerguntaService, FormularioPerguntaService>();
+
+builder.Services.AddControllers()
+    .AddJsonOptions(options =>
+    {
+        options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+    });
 
 var app = builder.Build();
 
@@ -42,6 +60,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseCors("AllowAllOrigins");
 
 app.UseAuthorization();
 
