@@ -6,8 +6,19 @@ using Acapra.Infra.Repositories;
 using Microsoft.EntityFrameworkCore;
 using MySqlConnector;
 using System.Data;
+using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAllOrigins", policy =>
+    {
+        policy.WithOrigins("*") // ou "*" para liberar todos
+              .AllowAnyHeader()
+              .AllowAnyMethod();
+    });
+});
 
 // Add services to the container.
 
@@ -16,7 +27,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-// Configuração do Entity Framework com PostgreSQL
+// Configuraï¿½ï¿½o do Entity Framework com PostgreSQL
 builder.Services.AddDbContext<AcapraDbContext>(options =>
     options.UseMySql(builder.Configuration.GetConnectionString("DataBase"), ServerVersion.AutoDetect(builder.Configuration.GetConnectionString("DataBase"))));
 //builder.Configuration.GetConnectionString("DataBase")
@@ -24,9 +35,20 @@ builder.Services.AddDbContext<AcapraDbContext>(options =>
 builder.Services.AddScoped<IDbConnection>(provider =>
         new MySqlConnection(builder.Configuration.GetConnectionString("DataBase")));
 
-//registrando os serviços e repositorios
-builder.Services.AddScoped<IExemploRepository, ExemploRepository>();
-builder.Services.AddScoped<IExemploService, ExemploService>();
+//registrando os serviï¿½os e repositorios
+
+builder.Services.AddScoped<IUsuarioRepository, UsuarioRepository>();
+builder.Services.AddScoped<IUsuarioService, UsuarioService>();
+builder.Services.AddScoped<IPetRepository, PetRepository>();
+builder.Services.AddScoped<IPetService, PetService>();
+builder.Services.AddScoped<IFormularioPerguntaRepository, FormularioPerguntaRepository>();
+builder.Services.AddScoped<IFormularioPerguntaService, FormularioPerguntaService>();
+
+builder.Services.AddControllers()
+    .AddJsonOptions(options =>
+    {
+        options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+    });
 
 var app = builder.Build();
 
@@ -38,6 +60,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseCors("AllowAllOrigins");
 
 app.UseAuthorization();
 

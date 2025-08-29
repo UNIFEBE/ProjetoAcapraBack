@@ -1,4 +1,4 @@
-﻿using Acapra.Domain.Entities;
+using Acapra.Domain.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 
 namespace Acapra.Domain.Interfaces.Repositories
 {
-    public interface IExemploRepository
+    public interface IFormularioPerguntaRepository
     {
-        List<PetModel> ListPets();
+        List<FormularioPerguntaModel> ListarPerguntas();
     }
 }
