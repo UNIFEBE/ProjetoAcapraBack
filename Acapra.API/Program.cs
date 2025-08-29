@@ -36,6 +36,9 @@ builder.Services.AddScoped<IDbConnection>(provider =>
         new MySqlConnection(builder.Configuration.GetConnectionString("DataBase")));
 
 //registrando os servi�os e repositorios
+
+builder.Services.AddScoped<IUsuarioRepository, UsuarioRepository>();
+builder.Services.AddScoped<IUsuarioService, UsuarioService>();
 builder.Services.AddScoped<IPetRepository, PetRepository>();
 builder.Services.AddScoped<IPetService, PetService>();
 builder.Services.AddScoped<IFormularioPerguntaRepository, FormularioPerguntaRepository>();
