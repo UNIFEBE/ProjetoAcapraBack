@@ -27,6 +27,8 @@ builder.Services.AddScoped<IDbConnection>(provider =>
 //registrando os servi�os e repositorios
 builder.Services.AddScoped<IExemploRepository, ExemploRepository>();
 builder.Services.AddScoped<IExemploService, ExemploService>();
+builder.Services.AddScoped<IFormularioPerguntaRepository, FormularioPerguntaRepository>();
+builder.Services.AddScoped<IFormularioPerguntaService, FormularioPerguntaService>();
 
 var app = builder.Build();
 
