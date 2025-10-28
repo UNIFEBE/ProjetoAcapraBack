@@ -17,7 +17,7 @@ namespace Acapra.Domain.Entities
         public string raca { get; set; }
         public DateTime data_nascimento { get; set; }
         public string pelagem { get; set; }
-        public byte[] imagem { get; set; }
+        public byte[]? imagem { get; set; }
         public bool castrado { get; set; }
         public bool vacinado { get; set; }
 

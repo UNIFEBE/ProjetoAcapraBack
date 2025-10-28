@@ -2,6 +2,7 @@ using Acapra.Application.Interfaces;
 using Acapra.Domain.DTOs;
 using Acapra.Domain.Entities;
 using Acapra.Domain.Interfaces.Repositories;
+using AutoMapper;
 
 namespace Acapra.Application.Services
 {
@@ -42,6 +43,14 @@ namespace Acapra.Application.Services
         public ApiResponse<bool> DeletarUsuario(int id)
         {
             return _usuarioRepository.DeletarUsuario(id);
+        }
+
+        public List<UsuarioModel> BuscarUsuarios()
+        {
+            var usuarios = _usuarioRepository.BuscarUsuarios();
+            if (!(usuarios.Count > 0))
+                return new List<UsuarioModel>();
+            return usuarios;
         }
     }
 }

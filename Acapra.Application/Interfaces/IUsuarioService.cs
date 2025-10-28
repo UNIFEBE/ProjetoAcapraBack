@@ -11,5 +11,6 @@ namespace Acapra.Application.Interfaces
         ApiResponse<UsuarioModel> BuscarUsuarioPorId(int id);
         ApiResponse<UsuarioModel> AtualizarUsuario(int id, UsuarioModel usuario);
         ApiResponse<bool> DeletarUsuario(int id);
+        List<UsuarioModel> BuscarUsuarios();
     }
 }
