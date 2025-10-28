@@ -133,5 +133,11 @@ namespace Acapra.Infra.Repositories
 
             return new ApiResponse<bool>(200, "Usuário deletado com sucesso", true);
         }
+        public List<UsuarioModel> BuscarUsuarios()
+        {
+            var usuarios = _context.Set<UsuarioModel>().ToList();
+
+            return usuarios;
+        }
     }
 }

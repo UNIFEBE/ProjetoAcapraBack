@@ -22,7 +22,7 @@ namespace Acapra.Infra.Mappings
             builder.Property(x => x.pelagem).HasColumnName("pelagem").HasColumnType("varchar(45)").IsRequired();
             builder.Property(x => x.castrado).HasColumnName("castrado").HasColumnType("tinyint(1)").IsRequired();
             builder.Property(x => x.vacinado).HasColumnName("vacinado").HasColumnType("tinyint(1)").IsRequired();
-            builder.Property(x => x.imagem).HasColumnName("imagem").HasColumnType("blob").IsRequired();
+            builder.Property(x => x.imagem).HasColumnName("imagem").HasColumnType("blob").IsRequired(false);
             builder.Property(x => x.porte).HasColumnName("porte").HasColumnType("varchar(70)").IsRequired();
 
             builder.Property(x => x.status)

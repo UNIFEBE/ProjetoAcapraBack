@@ -64,5 +64,17 @@ namespace Acapra.API.Controllers
             var response = _usuarioService.DeletarUsuario(id);
             return StatusCode(response.StatusCode, response);
         }
+
+        [HttpGet]
+        [Route("buscar-usuarios")]
+        public IActionResult BuscarUsuario()
+        {
+            var response = _usuarioService.BuscarUsuarios();
+
+            if (response.Count > 0) 
+                return Ok(response);
+            return NotFound();
+
+        }
     }
 }
