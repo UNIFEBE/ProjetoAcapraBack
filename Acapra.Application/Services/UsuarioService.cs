@@ -20,7 +20,7 @@ namespace Acapra.Application.Services
             return _usuarioRepository.CadastrarUsuario(usuario);
         }
 
-        public ApiResponse<string> Login(string email, string senha)
+        public ApiResponse<UsuarioModel> Login(string email, string senha)
         {
             return _usuarioRepository.Login(email, senha);
         }
