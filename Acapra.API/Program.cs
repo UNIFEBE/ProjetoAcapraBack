@@ -4,9 +4,11 @@ using Acapra.Domain.Interfaces.Repositories;
 using Acapra.Infra.Context;
 using Acapra.Infra.Repositories;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using MySqlConnector;
 using System.Data;
 using System.Text.Json.Serialization;
+using AutoMapper;
 
 var builder = WebApplication.CreateBuilder(args);
 

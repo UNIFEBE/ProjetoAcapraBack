@@ -44,22 +44,22 @@ namespace Acapra.Infra.Repositories
         }
 
         // Login com JWT
-        public ApiResponse<string> Login(string email, string senha)
+        public ApiResponse<UsuarioModel> Login(string email, string senha)
         {
             var usuario = _context.Set<UsuarioModel>().FirstOrDefault(u => u.email == email);
 
             if (usuario == null)
-                return new ApiResponse<string>(404, "Usuário não encontrado");
+                return new ApiResponse<UsuarioModel>(404, "Usuário não encontrado");
 
             if (usuario.ativo == false)
-                return new ApiResponse<string>(404, "Usuário inativo");
+                return new ApiResponse<UsuarioModel>(404, "Usuário inativo");
 
             if (!BCrypt.Net.BCrypt.Verify(senha, usuario.senha))
-                return new ApiResponse<string>(401, "Senha inválida");
+                return new ApiResponse<UsuarioModel>(401, "Senha inválida");
 
             // var token = _jwtService.GerarToken(usuario);
 
-            return new ApiResponse<string>(200, "Login realizado com sucesso", null);
+            return new ApiResponse<UsuarioModel>(200, "Login realizado com sucesso", usuario);
         }
 
         public ApiResponse<UsuarioModel> RedefinirSenha(int id, string senhaNova)
@@ -132,6 +132,12 @@ namespace Acapra.Infra.Repositories
             _context.SaveChanges();
 
             return new ApiResponse<bool>(200, "Usuário deletado com sucesso", true);
+        }
+        public List<UsuarioModel> BuscarUsuarios()
+        {
+            var usuarios = _context.Set<UsuarioModel>().ToList();
+
+            return usuarios;
         }
     }
 }

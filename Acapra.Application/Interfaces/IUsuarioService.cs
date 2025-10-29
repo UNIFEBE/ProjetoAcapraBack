@@ -6,10 +6,11 @@ namespace Acapra.Application.Interfaces
     public interface IUsuarioService
     {
         ApiResponse<UsuarioModel> CadastrarUsuario(UsuarioModel usuario);
-        ApiResponse<string> Login(string email, string senha);
+        ApiResponse<UsuarioModel> Login(string email, string senha);
         ApiResponse<UsuarioModel> RedefinirSenha(int id, string novaSenha);
         ApiResponse<UsuarioModel> BuscarUsuarioPorId(int id);
         ApiResponse<UsuarioModel> AtualizarUsuario(int id, UsuarioModel usuario);
         ApiResponse<bool> DeletarUsuario(int id);
+        List<UsuarioModel> BuscarUsuarios();
     }
 }
