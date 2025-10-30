@@ -14,7 +14,7 @@ namespace Acapra.Domain.Entities
 
         public int formulario_adocao_id { get; set; }
 
-        public string pergunta { get; set; }
+        public string? pergunta { get; set; }
 
         public TipoResposta tipo_resposta { get; set; }
 

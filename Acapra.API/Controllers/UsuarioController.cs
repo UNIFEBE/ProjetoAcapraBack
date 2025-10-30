@@ -76,5 +76,12 @@ namespace Acapra.API.Controllers
             return NotFound();
 
         }
+
+        [HttpPost]
+        [Route("verificar-email")]
+        public bool VerificarEmail([FromBody] string email)
+        {
+            return _usuarioService.VerificarEmail(email);
+        }
     }
 }
