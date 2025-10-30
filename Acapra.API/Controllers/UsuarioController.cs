@@ -33,10 +33,10 @@ namespace Acapra.API.Controllers
         }
 
         [HttpPut]
-        [Route("redefinir-senha/{id}")]
-        public IActionResult RedefinirSenha(int id, [FromBody] string novaSenha)
+        [Route("redefinir-senha/{email}")]
+        public IActionResult RedefinirSenha(string email, [FromBody] string novaSenha)
         {
-            var response = _usuarioService.RedefinirSenha(id, novaSenha);
+            var response = _usuarioService.RedefinirSenha(email, novaSenha);
             return StatusCode(response.StatusCode, response);
         }
 

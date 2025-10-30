@@ -25,9 +25,9 @@ namespace Acapra.Application.Services
             return _usuarioRepository.Login(email, senha);
         }
 
-        public ApiResponse<UsuarioModel> RedefinirSenha(int id, string novaSenha)
+        public ApiResponse<UsuarioModel> RedefinirSenha(string email, string novaSenha)
         {
-            return _usuarioRepository.RedefinirSenha(id, novaSenha);
+            return _usuarioRepository.RedefinirSenha(email, novaSenha);
         }
 
         public ApiResponse<UsuarioModel> BuscarUsuarioPorId(int id)

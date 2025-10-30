@@ -62,9 +62,9 @@ namespace Acapra.Infra.Repositories
             return new ApiResponse<UsuarioModel>(200, "Login realizado com sucesso", usuario);
         }
 
-        public ApiResponse<UsuarioModel> RedefinirSenha(int id, string senhaNova)
+        public ApiResponse<UsuarioModel> RedefinirSenha(string email, string senhaNova)
         {
-            var usuario = _context.Set<UsuarioModel>().Find(id);
+            var usuario = _context.Set<UsuarioModel>().FirstOrDefault(x => x.email == email);
 
             if (usuario == null)
                 return new ApiResponse<UsuarioModel>(404, "Usuário não encontrado");

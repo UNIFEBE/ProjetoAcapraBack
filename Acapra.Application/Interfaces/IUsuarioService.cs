@@ -7,7 +7,7 @@ namespace Acapra.Application.Interfaces
     {
         ApiResponse<UsuarioModel> CadastrarUsuario(UsuarioModel usuario);
         ApiResponse<UsuarioModel> Login(string email, string senha);
-        ApiResponse<UsuarioModel> RedefinirSenha(int id, string novaSenha);
+        ApiResponse<UsuarioModel> RedefinirSenha(string email, string novaSenha);
         ApiResponse<UsuarioModel> BuscarUsuarioPorId(int id);
         ApiResponse<UsuarioModel> AtualizarUsuario(int id, UsuarioModel usuario);
         ApiResponse<bool> DeletarUsuario(int id);
