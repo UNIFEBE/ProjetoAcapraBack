@@ -12,6 +12,6 @@ namespace Acapra.Domain.Interfaces.Repositories
         ApiResponse<UsuarioModel> AtualizarUsuario(int id, UsuarioModel usuario);
         ApiResponse<bool> DeletarUsuario(int id);
         List<UsuarioModel> BuscarUsuarios();
-
+        bool EmailJaUtilizado(string email);
     }
 }

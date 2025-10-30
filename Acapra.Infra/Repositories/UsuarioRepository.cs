@@ -20,7 +20,7 @@ namespace Acapra.Infra.Repositories
             // _jwtService = jwtService;
         }
 
-        private bool EmailJaUtilizado(string email) =>
+        public bool EmailJaUtilizado(string email) =>
             _context.Set<UsuarioModel>().Any(u => u.email == email && u.ativo == true);
 
         private bool CpfJaUtilizado(string cpf) =>
@@ -108,7 +108,7 @@ namespace Acapra.Infra.Repositories
             usuario.complemento = string.IsNullOrWhiteSpace(usuarioAtualizado.complemento) || usuarioAtualizado.complemento == "string" ? usuario.complemento : usuarioAtualizado.complemento;
             usuario.numero = string.IsNullOrWhiteSpace(usuarioAtualizado.numero) || usuarioAtualizado.numero == "string" ? usuario.numero : usuarioAtualizado.numero;
 
-            usuario.tipo_usuario = usuarioAtualizado.tipo_usuario == 0 ? usuario.tipo_usuario : usuarioAtualizado.tipo_usuario;
+            usuario.tipo_usuario = usuarioAtualizado.tipo_usuario;
 
             usuario.ativo = usuarioAtualizado.ativo;
 

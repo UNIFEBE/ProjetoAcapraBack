@@ -52,5 +52,10 @@ namespace Acapra.Application.Services
                 return new List<UsuarioModel>();
             return usuarios;
         }
+
+        public bool VerificarEmail(string email)
+        {
+            return _usuarioRepository.EmailJaUtilizado(email);
+        }
     }
 }

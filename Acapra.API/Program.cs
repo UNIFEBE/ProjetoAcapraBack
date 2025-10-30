@@ -9,6 +9,8 @@ using MySqlConnector;
 using System.Data;
 using System.Text.Json.Serialization;
 using AutoMapper;
+using Acapra.Domain.Interfaces.Dapper;
+using Vendas.Infra.Dapper;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -45,6 +47,9 @@ builder.Services.AddScoped<IPetRepository, PetRepository>();
 builder.Services.AddScoped<IPetService, PetService>();
 builder.Services.AddScoped<IFormularioPerguntaRepository, FormularioPerguntaRepository>();
 builder.Services.AddScoped<IFormularioPerguntaService, FormularioPerguntaService>();
+builder.Services.AddScoped<IFormularioRespostasRepository, FormularioRespostasRepository>();
+builder.Services.AddScoped<IFormularioRespostasServices, FormularioRespostasService>();
+builder.Services.AddScoped<IDapperAcapra, DapperAcapra>();
 
 builder.Services.AddControllers()
     .AddJsonOptions(options =>
