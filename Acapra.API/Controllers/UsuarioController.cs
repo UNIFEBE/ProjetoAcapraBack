@@ -1,6 +1,6 @@
 using Acapra.Application.Interfaces;
+using Acapra.Domain.DTOs;
 using Acapra.Domain.Entities;
-using Microsoft.AspNetCore.Identity.Data;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Acapra.API.Controllers
@@ -28,15 +28,15 @@ namespace Acapra.API.Controllers
         [Route("login")]
         public IActionResult Login([FromBody] LoginRequest request)
         {
-            var response = _usuarioService.Login(request.Email, request.Password);
+            var response = _usuarioService.Login(request.Email, request.Senha);
             return StatusCode(response.StatusCode, response);
         }
 
         [HttpPut]
-        [Route("redefinir-senha/{email}")]
-        public IActionResult RedefinirSenha(string email, [FromBody] string novaSenha)
+        [Route("redefinir-senha")]
+        public IActionResult RedefinirSenha(RedefinirSenhaDTO redefinirSenha)
         {
-            var response = _usuarioService.RedefinirSenha(email, novaSenha);
+            var response = _usuarioService.RedefinirSenha(redefinirSenha.email, redefinirSenha.novaSenha);
             return StatusCode(response.StatusCode, response);
         }
 
